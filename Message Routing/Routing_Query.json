@@ -1,0 +1,1 @@
+$body.NEURAL_NETWORK[0].label = "Spaghetti" AND $body.NEURAL_NETWORK[0].confidence > "0.30"

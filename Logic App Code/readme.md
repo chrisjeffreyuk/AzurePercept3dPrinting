@@ -1,0 +1,1 @@
+For the octoprintcontrol.json definition you will need to add your API Connections before running the workflow creation commands. These then need to be added to the definition.

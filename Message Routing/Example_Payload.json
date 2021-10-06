@@ -1,0 +1,15 @@
+{
+    "NEURAL_NETWORK": [
+      {
+        "bbox": [
+          0.333,
+          0.432,
+          0.491,
+          0.581
+        ],
+        "label": "Spaghetti",
+        "confidence": "0.595703",
+        "timestamp": "1632735273738927293"
+      }
+    ]
+  }

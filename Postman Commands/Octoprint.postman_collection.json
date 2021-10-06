@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "be05d0aa-5560-494e-a30e-d2166461a53c",
+		"name": "Octoprint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "External",
+			"item": [
+				{
+					"name": "Get Server Details - External",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-Api-Key",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "xxx.xxx.xxx.xxx/api/version?X-Api_Key=&Content-Type=application/json",
+							"host": [
+								"xxx",
+								"xxx",
+								"xxx",
+								"xxx"
+							],
+							"path": [
+								"api",
+								"version"
+							],
+							"query": [
+								{
+									"key": "X-Api_Key",
+									"value": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							]
+						},
+						"description": "{\r\n  \"documents\": [\r\n    {\r\n      \"language\": \"en\",\r\n      \"id\": \"1\",\r\n      \"text\": \"The restaurant had great food and our waiter was friendly.\"\r\n    }\r\n  ]\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Login - External",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "xxx.xxx.xxx.xxx/api/login?user=&pass=",
+							"host": [
+								"xxx",
+								"xxx",
+								"xxx",
+								"xxx"
+							],
+							"path": [
+								"api",
+								"login"
+							],
+							"query": [
+								{
+									"key": "Host",
+									"value": "xxx.xxx.xxx.xxx",
+									"disabled": true
+								},
+								{
+									"key": "user",
+									"value": ""
+								},
+								{
+									"key": "pass",
+									"value": ""
+								}
+							]
+						},
+						"description": "{\r\n  \"documents\": [\r\n    {\r\n      \"language\": \"en\",\r\n      \"id\": \"1\",\r\n      \"text\": \"The restaurant had great food and our waiter was friendly.\"\r\n    }\r\n  ]\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Pause Job - External",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-Api-Key",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"command\": \"pause\",\r\n    \"action\": \"pause\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "xxx.xxx.xxx.xxx/api/job?Api-Key=&Content-Type=application/json",
+							"host": [
+								"xxx",
+								"xxx",
+								"xxx",
+								"xxx"
+							],
+							"path": [
+								"api",
+								"job"
+							],
+							"query": [
+								{
+									"key": "Api-Key",
+									"value": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							]
+						},
+						"description": "{\r\n  \"documents\": [\r\n    {\r\n      \"language\": \"en\",\r\n      \"id\": \"1\",\r\n      \"text\": \"The restaurant had great food and our waiter was friendly.\"\r\n    }\r\n  ]\r\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Internal",
+			"item": [
+				{
+					"name": "Get Server Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Api-Key",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "xxx.xxx.xxx.xxx/api/version",
+							"host": [
+								"xxx",
+								"xxx",
+								"xxx",
+								"xxx"
+							],
+							"path": [
+								"api",
+								"version"
+							]
+						},
+						"description": "{\r\n  \"documents\": [\r\n    {\r\n      \"language\": \"en\",\r\n      \"id\": \"1\",\r\n      \"text\": \"The restaurant had great food and our waiter was friendly.\"\r\n    }\r\n  ]\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "xxx.xxx.xxx.xxx/api/login?user=&pass=",
+							"host": [
+								"xxx",
+								"xxx",
+								"xxx",
+								"xxx"
+							],
+							"path": [
+								"api",
+								"login"
+							],
+							"query": [
+								{
+									"key": "Host",
+									"value": "xxx.xxx.xxx.xxx",
+									"disabled": true
+								},
+								{
+									"key": "user",
+									"value": ""
+								},
+								{
+									"key": "pass",
+									"value": ""
+								}
+							]
+						},
+						"description": "{\r\n  \"documents\": [\r\n    {\r\n      \"language\": \"en\",\r\n      \"id\": \"1\",\r\n      \"text\": \"The restaurant had great food and our waiter was friendly.\"\r\n    }\r\n  ]\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Pause Job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"command\": \"pause\",\r\n    \"action\": \"pause\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "xxx.xxx.xxx.xxx/api/job?Api-Key=&Content-Type=application/json",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"52"
+							],
+							"path": [
+								"api",
+								"job"
+							],
+							"query": [
+								{
+									"key": "Api-Key",
+									"value": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							]
+						},
+						"description": "{\r\n  \"documents\": [\r\n    {\r\n      \"language\": \"en\",\r\n      \"id\": \"1\",\r\n      \"text\": \"The restaurant had great food and our waiter was friendly.\"\r\n    }\r\n  ]\r\n}"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

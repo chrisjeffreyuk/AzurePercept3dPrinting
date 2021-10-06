@@ -1,0 +1,294 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Decode_Base64_Parse": {
+                "inputs": {
+                    "content": "@json(base64ToString(triggerBody()?['ContentData']))",
+                    "schema": {
+                        "properties": {
+                            "NEURAL_NETWORK": {
+                                "items": {
+                                    "properties": {
+                                        "bbox": {
+                                            "items": {
+                                                "type": "number"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "confidence": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "timestamp": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "bbox",
+                                        "label",
+                                        "confidence",
+                                        "timestamp"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "Parse_JSON": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ParseJson"
+            },
+            "Get_Printer_Pause_Status": {
+                "inputs": {
+                    "headers": {
+                        "Content-Type": "applicaiton/json",
+                        "X-Api-Key": ""
+                    },
+                    "method": "GET",
+                    "uri": "http://000.000.000.000/api/job"
+                },
+                "runAfter": {
+                    "Decode_Base64_Parse": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Http"
+            },
+            "Parse_JSON": {
+                "inputs": {
+                    "content": "@triggerBody()",
+                    "schema": {
+                        "properties": {
+                            "ContentData": {
+                                "type": "string"
+                            },
+                            "ContentTransferEncoding": {
+                                "type": "string"
+                            },
+                            "ContentType": {
+                                "type": "string"
+                            },
+                            "CorrelationId": {
+                                "type": "string"
+                            },
+                            "Label": {},
+                            "LockToken": {
+                                "type": "string"
+                            },
+                            "MessageId": {
+                                "type": "string"
+                            },
+                            "Properties": {
+                                "properties": {
+                                    "CorrelationId": {
+                                        "type": "string"
+                                    },
+                                    "DeliveryCount": {
+                                        "type": "string"
+                                    },
+                                    "EnqueuedSequenceNumber": {
+                                        "type": "string"
+                                    },
+                                    "EnqueuedTimeUtc": {
+                                        "type": "string"
+                                    },
+                                    "ExpiresAtUtc": {
+                                        "type": "string"
+                                    },
+                                    "LockToken": {
+                                        "type": "string"
+                                    },
+                                    "LockedUntilUtc": {
+                                        "type": "string"
+                                    },
+                                    "MessageId": {
+                                        "type": "string"
+                                    },
+                                    "ScheduledEnqueueTimeUtc": {
+                                        "type": "string"
+                                    },
+                                    "SequenceNumber": {
+                                        "type": "string"
+                                    },
+                                    "Size": {
+                                        "type": "string"
+                                    },
+                                    "State": {
+                                        "type": "string"
+                                    },
+                                    "TimeToLive": {
+                                        "type": "string"
+                                    },
+                                    "iothub-connection-auth-generation-id": {
+                                        "type": "string"
+                                    },
+                                    "iothub-connection-auth-method": {
+                                        "type": "string"
+                                    },
+                                    "iothub-connection-device-id": {
+                                        "type": "string"
+                                    },
+                                    "iothub-connection-module-id": {
+                                        "type": "string"
+                                    },
+                                    "iothub-enqueuedtime": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "ReplyTo": {},
+                            "ReplyToSessionId": {},
+                            "ScheduledEnqueueTimeUtc": {
+                                "type": "string"
+                            },
+                            "SequenceNumber": {
+                                "type": "integer"
+                            },
+                            "SessionId": {},
+                            "TimeToLive": {
+                                "type": "string"
+                            },
+                            "To": {}
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {},
+                "type": "ParseJson"
+            },
+            "Printer_Status_Check": {
+                "actions": {
+                    "Terminate": {
+                        "inputs": {
+                            "runStatus": "Cancelled"
+                        },
+                        "runAfter": {},
+                        "type": "Terminate"
+                    }
+                },
+                "else": {
+                    "actions": {
+                        "Details": {
+                            "actions": {
+                                "Issue_HTTP_Pause_Command": {
+                                    "inputs": {
+                                        "body": {
+                                            "action": "pause",
+                                            "command": "pause"
+                                        },
+                                        "headers": {
+                                            "Content-Type": "application/json",
+                                            "X-Api-Key": ""
+                                        },
+                                        "method": "POST",
+                                        "uri": "http://000.000.000.000/api/job"
+                                    },
+                                    "runAfter": {},
+                                    "type": "Http"
+                                },
+                                "Send_Detection_Email": {
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p><span style=\"font-size: 14px\"><strong>A printer action has taken place:</strong></span><br>\n<br>\nDetection Type: @{items('Details')?['label']}<br>\nConfidence Level: @{items('Details')?['confidence']}<br>\nDevice: @{body('Parse_JSON')?['Properties']?['iothub-connection-device-id']}</p>",
+                                            "Importance": "High",
+                                            "Subject": "Azure Percept DK - 3D Printing Alert!",
+                                            "To": ""
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "referenceName": "<YOUR OUTLOOK CONNECTION>"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    },
+                                    "runAfter": {
+                                        "Issue_HTTP_Pause_Command": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection"
+                                },
+                                "Send_Detection_SMS": {
+                                    "inputs": {
+                                        "body": {
+                                            "body": "A printer action has taken place due to detection of  @{items('Details')?['label']} with a confidence of @{items('Details')?['confidence']} on device @{body('Parse_JSON')?['Properties']?['iothub-connection-device-id']}",
+                                            "from": "",
+                                            "to": ""
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "referenceName": "<YOUR TWILIO CONNECTION>"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/Messages.json"
+                                    },
+                                    "runAfter": {
+                                        "Issue_HTTP_Pause_Command": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection"
+                                }
+                            },
+                            "foreach": "@body('Decode_Base64_Parse')?['NEURAL_NETWORK']",
+                            "runAfter": {},
+                            "type": "Foreach"
+                        }
+                    }
+                },
+                "expression": {
+                    "and": [
+                        {
+                            "equals": [
+                                "@outputs('Get_Printer_Pause_Status')['statusCode']",
+                                "409 CONFLICT"
+                            ]
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Get_Printer_Pause_Status": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "If"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "triggers": {
+            "When_a_message_is_received_in_a_queue_(auto-complete)": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "referenceName": "<YOUR SERVICE BUS CONNECTION>"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/@{encodeURIComponent(encodeURIComponent('<YOURQUEUE>'))}/messages/head",
+                    "queries": {
+                        "queueType": "Main"
+                    }
+                },
+                "recurrence": {
+                    "frequency": "Second",
+                    "interval": 5
+                },
+                "type": "ApiConnection"
+            }
+        }
+    },
+    "kind": "Stateful"
+}
